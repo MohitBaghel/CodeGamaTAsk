@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CodeGamaTAsk</string>
+    <string name="Alert_Internet">Please check your internet connectivtiy.\n Try again after sometime</string>
+    <string name="resturant_nf">Resturant not found</string>
 </resources>
