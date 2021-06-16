@@ -2,6 +2,7 @@ package com.example.codegamatask.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,17 @@ public class ResturantAdapter extends RecyclerView.Adapter<ResturantAdapter.View
     public void onBindViewHolder(@NonNull @NotNull ResturantAdapter.ViewHolder holder, int position) {
         DataItem data=dataItems.get(position);
         holder.binding.restNameTv.setText(data.getRestaurantName());
+        holder.binding.price.setText(String.valueOf(data.getPriceRange()));
+        holder.binding.priceNum.setText(String.valueOf(data.getPriceRangeNum()));
+        holder.binding.hour.setText(String.valueOf(data.getRestaurantPhone()));
+        holder.binding.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mvpView.onClickPosition(data,"details");
+            }
+        });
+
+
 
     }
 

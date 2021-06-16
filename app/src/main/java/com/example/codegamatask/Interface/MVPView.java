@@ -1,5 +1,7 @@
 package com.example.codegamatask.Interface;
 
+import com.example.codegamatask.models.byLocation.DataItem;
+
 public interface MVPView {
-    void onClickPosition(int position,String name);
+    void onClickPosition(DataItem position, String name);
 }

@@ -3,9 +3,11 @@
     package="com.example.codegamatask">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,12 +17,15 @@
         android:theme="@style/Theme.CodeGamaTAsk"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".Activity.Home"
+        <activity android:name=".Activity.ResturantDetails"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-           />
-
-        <activity android:name=".Activity.Splash"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.Home"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.Splash"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
