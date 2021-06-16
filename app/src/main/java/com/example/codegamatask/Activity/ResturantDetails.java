@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ResturantDetails extends AppCompatActivity implements ItemSelected {
+public class ResturantDetails extends AppCompatActivity {
     private static final String TAG = "Resturant";
     private ActivityResturantDetailsBinding binding;
     private Long id;
@@ -44,7 +44,7 @@ public class ResturantDetails extends AppCompatActivity implements ItemSelected 
             id = bundle.getLong("restId");
             Log.d(TAG,id.toString());
             menu=new ArrayList<>();
-            adapter = new MenuSectionAdapter(this,menu,ResturantDetails.this);
+            adapter = new MenuSectionAdapter(this,menu);
             binding.menuRv.setLayoutManager(new GridLayoutManager(this,1));
             binding.menuRv.setAdapter(adapter);
             FetchDetils(id);
@@ -108,9 +108,5 @@ public class ResturantDetails extends AppCompatActivity implements ItemSelected 
     }
 
 
-    @Override
-    public void onclick(MenuSectionsItem position, String name) {
 
-
-    }
 }

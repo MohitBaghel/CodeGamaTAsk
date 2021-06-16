@@ -1,7 +1,7 @@
 package com.example.codegamatask.Interface;
 
-import com.example.codegamatask.models.resturantdetails.MenuSectionsItem;
+import com.example.codegamatask.models.searchModel.DataItem;
 
 public interface ItemSelected {
-    void onclick(MenuSectionsItem position, String name);
+    void onclick(DataItem position, String name);
 }

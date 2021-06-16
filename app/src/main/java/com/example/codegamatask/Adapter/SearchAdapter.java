@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.codegamatask.Interface.ItemSelected;
 import com.example.codegamatask.Interface.MVPView;
 import com.example.codegamatask.databinding.LayoutResturantAdapterBinding;
 import com.example.codegamatask.models.byLocation.DataItem;
@@ -16,30 +17,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ResturantAdapter extends RecyclerView.Adapter<ResturantAdapter.ViewHolder> {
-
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
     Context context;
-    List<DataItem> dataItems;
-    MVPView mvpView;
+    List<com.example.codegamatask.models.searchModel.DataItem> dataItem;
+    ItemSelected itemSelected;
 
-    public ResturantAdapter(Context context, List<DataItem> dataItems, MVPView mvpView) {
+    public SearchAdapter(Context context, List<com.example.codegamatask.models.searchModel.DataItem> dataItem, ItemSelected itemSelected) {
         this.context = context;
-        this.dataItems = dataItems;
-        this.mvpView = mvpView;
+        this.dataItem = dataItem;
+        this.itemSelected = itemSelected;
     }
 
     @NonNull
     @NotNull
     @Override
-    public ResturantAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater=LayoutInflater.from(parent.getContext());
         LayoutResturantAdapterBinding binding=LayoutResturantAdapterBinding.inflate(inflater,parent,false);
         return  new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ResturantAdapter.ViewHolder holder, int position) {
-        DataItem data=dataItems.get(position);
+    public void onBindViewHolder(@NonNull @NotNull SearchAdapter.ViewHolder holder, int position) {
+        com.example.codegamatask.models.searchModel.DataItem data=dataItem.get(position);
         holder.binding.restNameTv.setText(data.getRestaurantName());
         holder.binding.price.setText(String.valueOf(data.getPriceRange()));
         holder.binding.priceNum.setText(String.valueOf(data.getPriceRangeNum()));
@@ -47,38 +47,38 @@ public class ResturantAdapter extends RecyclerView.Adapter<ResturantAdapter.View
         holder.binding.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mvpView.onClickPosition(data,"details");
+                itemSelected.onclick(data,"restId");
             }
         });
     }
-
+    
     @Override
     public int getItemCount() {
-        if (dataItems != null) {
-            return dataItems.size();
+        if (dataItem != null) {
+            return dataItem.size();
         } else {
             return 0;
         }
     }
-    public void update(List<DataItem> dataItems) {
+    public void update(List<com.example.codegamatask.models.searchModel.DataItem> dataItem) {
         try {
-            this.dataItems = dataItems;
+            this.dataItem = dataItem;
             notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    public void setData(List<DataItem> dataItems) {
-            this.dataItems=dataItems;
+    public void setData(List<com.example.codegamatask.models.searchModel.DataItem> dataItem) {
+        this.dataItem=dataItem;
     }
+    
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         LayoutResturantAdapterBinding binding;
-        public ViewHolder(@NonNull @NotNull  LayoutResturantAdapterBinding binding) {
+        public ViewHolder(@NonNull @NotNull LayoutResturantAdapterBinding binding) {
             super(binding.getRoot());
             try{
-             this.binding=binding;
+                this.binding=binding;
             }catch(Exception e){
                 e.printStackTrace();
             }

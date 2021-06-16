@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.codegamatask.Activity.ResturantDetails;
@@ -23,12 +24,10 @@ public class MenuSectionAdapter extends RecyclerView.Adapter<MenuSectionAdapter.
 
     Context context;
     List<MenuSectionsItem> menu;
-    ItemSelected itemSelected;
 
-    public MenuSectionAdapter(Context context, List<MenuSectionsItem> menu, ItemSelected itemSelected) {
+    public MenuSectionAdapter(Context context, List<MenuSectionsItem> menu) {
         this.context = context;
         this.menu = menu;
-        this.itemSelected = itemSelected;
     }
 
 
@@ -57,6 +56,14 @@ public class MenuSectionAdapter extends RecyclerView.Adapter<MenuSectionAdapter.
             holder.binding.down.setVisibility(View.VISIBLE);
             holder.binding.up.setVisibility(View.GONE);
         });
+        if(sectionsItem.getMenuItems().size()>0 ){
+            MenuDetailAdapter menuDetailAdapter=new MenuDetailAdapter(context,sectionsItem.getMenuItems());
+            GridLayoutManager manager = new GridLayoutManager(context, 1);
+            holder.binding.menuItemRv.setLayoutManager(manager);
+            holder.binding.menuItemRv.setAdapter(menuDetailAdapter);
+            menuDetailAdapter.notifyDataSetChanged();
+
+        }
 
 
     }

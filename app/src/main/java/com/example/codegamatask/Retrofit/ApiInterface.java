@@ -22,7 +22,7 @@ public interface ApiInterface {
 
     @GET("restaurants/search/fields")
     Call<ResponsegetSearch> getSearchByFiels (@HeaderMap Map<String,String> map,
-                                              @Query("restaurant_name") String name);
+                                              @Query("query") String name);
 
     @GET("restaurant/{id}")
     Call<ResponsegetResturantDetails> getResturantDetails (@Path("id") long id,

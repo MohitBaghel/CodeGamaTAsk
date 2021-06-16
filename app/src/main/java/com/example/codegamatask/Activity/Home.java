@@ -25,6 +25,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.codegamatask.Adapter.ResturantAdapter;
+import com.example.codegamatask.Adapter.SearchAdapter;
+import com.example.codegamatask.Interface.ItemSelected;
 import com.example.codegamatask.Interface.MVPView;
 import com.example.codegamatask.R;
 import com.example.codegamatask.Retrofit.APIClient;
@@ -45,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Home extends AppCompatActivity implements MVPView, LocationListener {
+public class Home extends AppCompatActivity implements MVPView, LocationListener, ItemSelected {
 
 
     final String TAG = "GPS";
@@ -56,7 +58,9 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
     private static final String TAGG = "Home";
     private ActivityHomeBinding binding;
     private ResturantAdapter adapter;
+    private SearchAdapter searchadapter;
     private List<DataItem> dataItems=new ArrayList<>();
+    private List<com.example.codegamatask.models.searchModel.DataItem> data=new ArrayList<>();
     private Double lat,lon;
     private int distance=5;
 
@@ -105,6 +109,8 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
                 getLocation();
             }
 
+            searchadapter =new SearchAdapter(this,data,Home.this);
+            binding.searchRv.setLayoutManager(new GridLayoutManager(this,1));
 
             adapter =new ResturantAdapter(this,dataItems,Home.this);
             binding.resturantRv.setLayoutManager(new GridLayoutManager(this,1));
@@ -127,9 +133,11 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
                                 binding.resturantRv.setVisibility(View.GONE);
                                 getSearchItems(s.toString());
                             } else {
-//                            search_content_lo.setVisibility(View.GONE);
-//                            tools_rv.setVisibility(View.VISIBLE);
-//                                getCategoryList();
+                                if(BasicUtilities.checkNetworkConnection(Home.this)) {
+                                    nearResturant(40.688072, -73.997385, distance);
+                                }else{
+                                    Toast.makeText(Home.this, R.string.Alert_Internet, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -158,21 +166,24 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
             ApiInterface cr = APIClient.getClient().create(ApiInterface.class);
             Map<String, String> map = new HashMap<>();
             map.put("x-api-key", Globals.Key);
+            Log.d(TAGG,search_query.toString());
             Call<ResponsegetSearch> call = cr.getSearchByFiels(map,search_query);
             call.enqueue(new Callback<ResponsegetSearch>() {
                 @Override
                 public void onResponse(Call<ResponsegetSearch> call, Response<ResponsegetSearch> response) {
-                    try {
-//                        search_progress_bar.setVisibility(View.GONE);
-                        if (response.body().getData().size() > 0 && response.code() == 200) {
-                            Log.d(TAG,response.body().toString());
-//                            binding.resturantRv.setVisibility(View.VISIBLE);
-
-                        } else {
-//                            no_items_found.setVisibility(View.VISIBLE);
-//                            search_rv.setVisibility(View.GONE);
+                    try{
+                        binding.progressBar.setVisibility(View.GONE);
+                        Log.d(TAG,response.body().toString());
+                        if(response.body().getData().size() > 0 && response.code() == 200){
+                            binding.searchRv.setVisibility(View.VISIBLE);
+                            data=response.body().getData();
+                            searchadapter.setData(data);
+                            binding.searchRv.setAdapter(searchadapter);
+                            searchadapter.update(data);
+                        }else{
+                            Toast.makeText(Home.this, R.string.resturant_nf, Toast.LENGTH_SHORT).show();
                         }
-                    } catch (Exception e) {
+                    }catch(Exception e){
                         e.printStackTrace();
                     }
                 }
@@ -200,9 +211,11 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
             public void onResponse(Call<ResponsegetSearchDetails> call, Response<ResponsegetSearchDetails> response) {
                 try{
                     binding.progressBar.setVisibility(View.GONE);
+
                     Log.d(TAG,response.body().toString());
                     if(response.body().getData().size() > 0 && response.code() == 200){
                         binding.resturantRv.setVisibility(View.VISIBLE);
+                        binding.searchRv.setVisibility(View.GONE);
                         dataItems=response.body().getData();
                         adapter.setData(dataItems);
                         binding.resturantRv.setAdapter(adapter);
@@ -417,4 +430,16 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
         }
 
     }
+
+    @Override
+    public void onclick(com.example.codegamatask.models.searchModel.DataItem data, String name) {
+        try{
+        Intent i=new Intent(this,ResturantDetails.class);
+        i.putExtra("restId",data.getRestaurantId());
+        startActivity(i);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }
