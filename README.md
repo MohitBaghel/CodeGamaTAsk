@@ -4,7 +4,5 @@ In this project i fetch the local location and get near by Resturants but in my 
 A list of resurant is shown on Home page,Seach tab is used to get particular resturant by phone_number,Address,name,website etc.
 Ater clicking on resturant we have data of Resturant name,Address,Website,Description,Timimg,phone no,prices,Menu,Cuisine
 In Menu we have name,description.
-After click on Button we have a list of all food item of different categories with name,price,description
-
-
-
+After click on Button we have a list of all food item of different categories with name,price,description.
+i didn't do to much work on UI.
