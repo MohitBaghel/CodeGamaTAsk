@@ -135,6 +135,7 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
                             } else {
                                 if(BasicUtilities.checkNetworkConnection(Home.this)) {
                                     nearResturant(40.688072, -73.997385, distance);
+//                                    nearResturant(lat, lon, distance);
                                 }else{
                                     Toast.makeText(Home.this, R.string.Alert_Internet, Toast.LENGTH_SHORT).show();
                                 }
@@ -148,6 +149,7 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
                 }
             });
             if(BasicUtilities.checkNetworkConnection(this)) {
+//                nearResturant(lat, lon, distance);
                 nearResturant(40.688072, -73.997385, distance);
             }else{
                 Toast.makeText(this, R.string.Alert_Internet, Toast.LENGTH_SHORT).show();
@@ -205,6 +207,8 @@ public class Home extends AppCompatActivity implements MVPView, LocationListener
         ApiInterface api= APIClient.getClient().create(ApiInterface.class);
         HashMap<String,String> map=new HashMap<>();
         map.put("x-api-key", Globals.Key);
+        Log.d(TAGG,"lat:"+lat+"long:"+lon+"dist:"+distance);
+        Log.d(TAGG,Globals.Key.toString());
         Call<ResponsegetSearchDetails> call=api.getSearchGeo(map,lat,lon,distance);
         call.enqueue(new Callback<ResponsegetSearchDetails>() {
             @Override
